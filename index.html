@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Password Generator</title>
+    <link rel="stylesheet" href="/style.css"/>
 </head>
 <body>
-    
+    <div class="container">
+        <h1>Random Password</h1>
+        <div class="password">{{password}}</div>
+        <p class="information">Generated from {{x}} random words</p>
+        <a class="refresh-btn" href="/?x={{x}}">Generate Again</a>
+    </div>
+
 </body>
 </html>

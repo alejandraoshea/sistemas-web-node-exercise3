@@ -1,0 +1,67 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(100deg, #113f8a87, #290760);
+
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.1);
+  background-color: #3709476e;
+  backdrop-filter: blur(10px);
+  padding: 2rem 3rem;
+  border-radius: 1.5rem;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+}
+
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.password {
+  font-size: 1.4rem;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  display: inline-block;
+  word-wrap: break-word;
+  margin-bottom: 1rem;
+}
+
+.information {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.refresh-btn {
+  margin-top: 1rem;
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 0.8rem;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.refresh-btn:hover {
+  background-color: rgba(255, 255, 255, 0.35);
+}

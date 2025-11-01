@@ -1,5 +1,7 @@
 const http = require("http");
+const fs = require("fs");
 const url = require("url");
+const path = require("path");
 
 const dictionary = [
   "sun", "moon", "star", "stars", "starlight", "night", "dawn", "twilight",
@@ -7,18 +9,17 @@ const dictionary = [
   "frost", "ice", "fire", "ember", "flame", "river", "ocean", "sea", "wave",
   "mountain", "forest", "tree", "leaf", "flower", "stone", "crystal", "mist",
   "shadow", "light", "spark", "echo", "whisper", "dream", "silence",
-  "rune", "arcane", "mystic", "spell", "guardian", "wanderer", "hero",
-  "legend", "myth", "oracle", "prophecy", "kingdom", "realm", "moonlight",
-  "nightfall", "stardust", "dreamer", "seeker", "voyager",
-  "sage", "keeper", "watcher", "hunter", "ghost", "shadowfall",
-  "hope", "grace", "truth", "peace", "honor", "fate", "destiny",
-  "freedom", "eternity", "harmony", "memory", "silence", "song", "serenity",
-  "wisdom", "lightheart", "kindness", "radiance", "infinity", "silver", 
-  "golden", "crimson", "azure", "emerald", "onyx", "sapphire",
+  "magic", "sword", "shield", "rune", "arcane", "mystic", "spell", 
+  "guardian", "wanderer", "legend", "myth", "oracle", "prophecy", "moonlight",
+  "nightfall", "stardust", "dreamer", "seeker", "voyager", "sage", "keeper",
+  "watcher", "hunter", "ghost", "shadowfall",
+  "hope", "grace", "truth", "peace", "honor", "valor", "fate", "destiny",
+  "freedom", "eternity", "harmony", "memory", "song", "serenity", "wisdom",
+  "kindness", "radiance", "infinity", "courage",
+  "silver", "golden", "crimson", "azure", "emerald", "onyx", "sapphire",
   "amber", "scarlet", "midnight", "celestial", "ethereal", "lunar", "solar",
   "galaxy", "cosmos", "nebula", "nova", "comet", "eclipse"
 ];
-
 
 function generatePassword(numWords) {
   const words = [];
@@ -30,19 +31,40 @@ function generatePassword(numWords) {
 }
 
 const server = http.createServer((req, res) => {
-  const queryObject = url.parse(req.url, true).query;
-  const x = Math.max(1, parseInt(queryObject.x) || 4); 
+  const parsedUrl = url.parse(req.url, true);
+  const pathname = parsedUrl.pathname;
 
+  if (pathname === "/style.css") {
+    const cssPath = path.join(__dirname, "style.css");
+    fs.readFile(cssPath, (err, data) => {
+      if (err) {
+        res.writeHead(404);
+        res.end("CSS file not found");
+      } else {
+        res.writeHead(200, { "Content-Type": "text/css" });
+        res.end(data);
+      }
+    });
+    return;
+  }
+
+  const x = Math.max(1, parseInt(parsedUrl.query.x) || 4);
   const password = generatePassword(x);
 
-  res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-  res.end(`
-    <h1>🔑 Your Random Password</h1>
-    <p style="font-size: 1.5em; color: #444;">
-      <strong>${password}</strong>
-    </p>
-    <p>Generated from ${x} random words 🌙</p>
-  `);
+  fs.readFile(path.join(__dirname, "index.html"), "utf8", (err, html) => {
+    if (err) {
+      res.writeHead(500);
+      res.end("Error loading HTML file");
+      return;
+    }
+
+    const renderedHtml = html
+      .replace("{{password}}", password)
+      .replace("{{x}}", x);
+
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+    res.end(renderedHtml);
+  });
 });
 
 const PORT = 3000;
